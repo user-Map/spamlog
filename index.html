@@ -3,48 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpamLogib Tool - Garena Control</title>
+    <title>SpamLogib Professional</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="container">
-        <div class="card">
-            <div class="header">
-                <i class="fas fa-fire-alt logo-icon"></i>
-                <h1>SPAM LOGIN TOOL</h1>
-                <p>Advanced Garena Token Stress Tester</p>
-            </div>
-
-            <div class="input-group">
-                <label for="accessToken"><i class="fas fa-key"></i> Access Token</label>
-                <input type="text" id="accessToken" placeholder="Dán token của bạn vào đây...">
-            </div>
-
-            <div class="controls">
-                <button id="startBtn" class="btn btn-start">
-                    <i class="fas fa-rocket"></i> BẮT ĐẦU SPAM
-                </button>
-                <button id="stopBtn" class="btn btn-stop" disabled>
-                    <i class="fas fa-stop-circle"></i> DỪNG LẠI
-                </button>
-            </div>
-
-            <div class="status-panel">
-                <div class="status-header">
-                    <span>Trạng thái hệ thống:</span>
-                    <span id="liveStatus" class="badge">Đang chờ...</span>
+    <div class="wrapper">
+        <!-- Phần nội dung chính (Vuốt lên xuống ở đây) -->
+        <main class="content">
+            <div class="card">
+                <div class="header">
+                    <h1>SPAM LOGIB v2</h1>
+                    <p>Hệ thống điều khiển Token Garena</p>
                 </div>
-                <div id="logTerminal" class="terminal">
-                    <div class="line">> Sẵn sàng khởi động hệ thống...</div>
+
+                <div class="input-box">
+                    <label>ACCESS TOKEN</label>
+                    <textarea id="accessToken" placeholder="Nhập token tại đây..."></textarea>
+                </div>
+
+                <div class="actions">
+                    <button id="startBtn" class="btn-run">KÍCH HOẠT HỆ THỐNG</button>
+                    <button id="stopBtn" class="btn-stop" disabled>DỪNG LẠI</button>
+                </div>
+
+                <div class="info-section">
+                    <h3>Hướng dẫn:</h3>
+                    <ul>
+                        <li>Dán Token lấy từ Garena vào ô trên.</li>
+                        <li>Nhấn kích hoạt để bắt đầu gửi packet login.</li>
+                        <li>Theo dõi trạng thái tại bảng Log bên dưới.</li>
+                    </ul>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Phần Log nằm cố định ở dưới cùng -->
+        <footer class="log-container">
+            <div class="log-header">
+                <span>Hệ thống Log Real-time</span>
+                <span id="status-dot" class="dot"></span>
+            </div>
+            <div id="logBody" class="log-body">
+                <div class="msg">[Hệ thống]: Sẵn sàng...</div>
+            </div>
+        </footer>
     </div>
 
-    <div id="notification-container"></div>
-
+    <div id="toast"></div>
     <script src="script.js"></script>
 </body>
 </html>
