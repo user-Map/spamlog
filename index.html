@@ -1,0 +1,332 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Garena Control Panel | Tool Management</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo-area">
+                <i class="fas fa-shield-alt"></i>
+                <span>Garena<span class="highlight">CP</span></span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="token-tools">
+                    <i class="fas fa-key"></i>
+                    <span>Token Tools</span>
+                </a>
+                <a href="#" class="nav-item" data-page="spam-tools">
+                    <i class="fas fa-bomb"></i>
+                    <span>Spam Tools</span>
+                </a>
+                <a href="#" class="nav-item" data-page="email-tools">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email Tools</span>
+                </a>
+                <a href="#" class="nav-item" data-page="history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </a>
+                <a href="#" class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="status-badge">
+                    <i class="fas fa-circle"></i>
+                    <span>System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-title">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">Tổng quan hệ thống</p>
+                </div>
+                <div class="header-actions">
+                    <div class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Content Pages -->
+            <div id="dashboard" class="page active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Users</h3>
+                            <p class="stat-number" id="totalUsers">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Tokens Active</h3>
+                            <p class="stat-number" id="activeTokens">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Spam Active</h3>
+                            <p class="stat-number" id="spamActive">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Success Rate</h3>
+                            <p class="stat-number">96<span>%</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="showPage('token-tools')">
+                            <i class="fas fa-key"></i> Check Token
+                        </button>
+                        <button class="action-btn warning" onclick="showPage('spam-tools')">
+                            <i class="fas fa-bomb"></i> Start Spam
+                        </button>
+                        <button class="action-btn success" onclick="showPage('email-tools')">
+                            <i class="fas fa-envelope"></i> Change Email
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2><i class="fas fa-clock"></i> Recent Activity</h2>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <i class="fas fa-check-circle success"></i>
+                            <div class="activity-detail">
+                                <p>Token checked successfully</p>
+                                <span>2 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-envelope warning"></i>
+                            <div class="activity-detail">
+                                <p>Email change requested</p>
+                                <span>15 minutes ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Tools Page -->
+            <div id="token-tools" class="page">
+                <div class="tool-card">
+                    <h2><i class="fas fa-info-circle"></i> Check Token Info</h2>
+                    <div class="input-group">
+                        <label>Access Token</label>
+                        <textarea id="checkTokenInput" placeholder="Paste your access token here..." rows="3"></textarea>
+                        <button class="btn-primary" onclick="checkToken()">
+                            <i class="fas fa-search"></i> Check Token
+                        </button>
+                    </div>
+                    <div id="tokenResult" class="result-box hidden"></div>
+                </div>
+
+                <div class="tool-card">
+                    <h2><i class="fas fa-sign-out-alt"></i> Logout All Devices</h2>
+                    <div class="input-group">
+                        <label>Access Token</label>
+                        <textarea id="logoutTokenInput" placeholder="Paste your access token here..." rows="3"></textarea>
+                        <button class="btn-danger" onclick="logoutAll()">
+                            <i class="fas fa-power-off"></i> Logout All
+                        </button>
+                    </div>
+                    <div id="logoutResult" class="result-box hidden"></div>
+                </div>
+
+                <div class="tool-card">
+                    <h2><i class="fas fa-ban"></i> Cancel Pending Bind</h2>
+                    <div class="input-group">
+                        <label>Access Token</label>
+                        <textarea id="cancelBindInput" placeholder="Paste your access token here..." rows="3"></textarea>
+                        <button class="btn-warning" onclick="cancelPendingBind()">
+                            <i class="fas fa-times-circle"></i> Cancel Request
+                        </button>
+                    </div>
+                    <div id="cancelBindResult" class="result-box hidden"></div>
+                </div>
+            </div>
+
+            <!-- Spam Tools Page -->
+            <div id="spam-tools" class="page">
+                <div class="tool-card">
+                    <h2><i class="fas fa-fire"></i> Spam Login</h2>
+                    <div class="input-group">
+                        <label>Access Token</label>
+                        <textarea id="spamTokenInput" placeholder="Paste your access token here..." rows="3"></textarea>
+                        <div class="button-group">
+                            <button class="btn-danger" onclick="startSpam()">
+                                <i class="fas fa-play"></i> Start Spam
+                            </button>
+                            <button class="btn-secondary" onclick="stopSpam()">
+                                <i class="fas fa-stop"></i> Stop Spam
+                            </button>
+                        </div>
+                    </div>
+                    <div id="spamStatus" class="status-card">
+                        <i class="fas fa-circle-notch fa-spin"></i> Idle
+                    </div>
+                </div>
+
+                <div class="tool-card">
+                    <h2><i class="fas fa-mail-bulk"></i> Spam OTP Email</h2>
+                    <div class="input-group">
+                        <label>Target Email</label>
+                        <input type="email" id="otpEmailInput" placeholder="example@domain.com">
+                        <div class="button-group">
+                            <button class="btn-warning" onclick="startOtpSpam()">
+                                <i class="fas fa-paper-plane"></i> Start OTP Spam
+                            </button>
+                            <button class="btn-secondary" onclick="stopOtpSpam()">
+                                <i class="fas fa-stop"></i> Stop OTP Spam
+                            </button>
+                        </div>
+                    </div>
+                    <div id="otpStatus" class="status-card">
+                        <i class="fas fa-circle-notch"></i> Ready
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Tools Page -->
+            <div id="email-tools" class="page">
+                <div class="tool-card">
+                    <h2><i class="fas fa-exchange-alt"></i> Change Email Address</h2>
+                    <div class="step-indicator">
+                        <div class="step active" id="step1">Step 1: Token</div>
+                        <div class="step" id="step2">Step 2: Old Email</div>
+                        <div class="step" id="step3">Step 3: New Email</div>
+                        <div class="step" id="step4">Step 4: Verify</div>
+                    </div>
+                    
+                    <div id="emailChangeForm">
+                        <div class="input-group" id="step1Form">
+                            <label>Access Token</label>
+                            <textarea id="changeTokenInput" placeholder="Paste your access token here..." rows="3"></textarea>
+                            <button class="btn-primary" onclick="nextEmailStep()">
+                                Next <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="emailResult" class="result-box hidden"></div>
+                </div>
+
+                <div class="tool-card">
+                    <h2><i class="fas fa-unlock-alt"></i> Unbind Email</h2>
+                    <div class="input-group">
+                        <label>Access Token</label>
+                        <textarea id="unbindTokenInput" placeholder="Paste your access token here..." rows="3"></textarea>
+                        <button class="btn-danger" onclick="unbindEmail()">
+                            <i class="fas fa-unlink"></i> Unbind Email
+                        </button>
+                    </div>
+                    <div id="unbindResult" class="result-box hidden"></div>
+                </div>
+            </div>
+
+            <!-- History Page -->
+            <div id="history" class="page">
+                <div class="tool-card">
+                    <h2><i class="fas fa-list"></i> Token History</h2>
+                    <div class="history-filters">
+                        <input type="text" placeholder="Search..." id="historySearch">
+                        <select id="historyFilter">
+                            <option value="all">All</option>
+                            <option value="check">Check</option>
+                            <option value="spam">Spam</option>
+                            <option value="email">Email Change</option>
+                        </select>
+                        <button class="btn-secondary" onclick="clearHistory()">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                    <div id="historyList" class="history-list">
+                        <p class="text-center text-muted">No history yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="page">
+                <div class="tool-card">
+                    <h2><i class="fas fa-sliders-h"></i> System Settings</h2>
+                    <div class="setting-item">
+                        <label>Auto Save Tokens</label>
+                        <input type="checkbox" id="autoSaveTokens" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label>Dark Mode</label>
+                        <input type="checkbox" id="darkMode">
+                    </div>
+                    <div class="setting-item">
+                        <label>Notification Sound</label>
+                        <input type="checkbox" id="notificationSound" checked>
+                    </div>
+                    <div class="setting-item">
+                        <label>Spam Delay (seconds)</label>
+                        <input type="number" id="spamDelay" value="1.5" step="0.5" min="0.5">
+                    </div>
+                    <button class="btn-primary" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+
+                <div class="tool-card">
+                    <h2><i class="fas fa-database"></i> Data Management</h2>
+                    <button class="btn-secondary" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export All Data
+                    </button>
+                    <button class="btn-danger" onclick="clearAllData()">
+                        <i class="fas fa-trash-alt"></i> Clear All Data
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
