@@ -1,74 +1,50 @@
+const logBody = document.getElementById('logBody');
+const statusDot = document.getElementById('status-dot');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
-const tokenInput = document.getElementById('accessToken');
-const terminal = document.getElementById('logTerminal');
-const liveStatus = document.getElementById('liveStatus');
 
-let isRunning = false;
-let spamInterval = null;
-
-// Hàm tạo thông báo Popup (Toast)
-function showToast(message, type = 'info') {
-    const container = document.getElementById('notification-container');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    if(type === 'success') toast.style.borderLeftColor = '#2ed573';
-    if(type === 'error') toast.style.borderLeftColor = '#ff4757';
-    
-    toast.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
-    container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 500);
-    }, 3000);
+function addLog(text, color = "#00ff00") {
+    const p = document.createElement('div');
+    p.style.color = color;
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+    logBody.appendChild(p);
+    logBody.scrollTop = logBody.scrollHeight; // Tự động cuộn xuống log mới nhất
 }
 
-function addLog(text) {
-    const line = document.createElement('div');
-    line.className = 'line';
-    line.textContent = `[${new Date().toLocaleTimeString()}] > ${text}`;
-    terminal.appendChild(line);
-    terminal.scrollTop = terminal.scrollHeight;
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2000);
 }
 
-startBtn.addEventListener('click', () => {
-    const token = tokenInput.value.trim();
-    
-    if (!token) {
-        showToast("Vui lòng nhập Access Token!", "error");
-        return;
-    }
+startBtn.onclick = async () => {
+    const token = document.getElementById('accessToken').value;
+    if(!token) return showToast("Chưa nhập Token!");
 
-    isRunning = true;
     startBtn.disabled = true;
     stopBtn.disabled = false;
-    tokenInput.disabled = true;
-    
-    liveStatus.textContent = "Đang chạy...";
-    liveStatus.style.background = "#ff4757";
-    
-    showToast("Đã khởi động tiến trình Spam Log!", "success");
-    addLog("Đang kết nối tới Server Garena...");
-    addLog("Đang mã hóa gói tin Protobuf...");
+    statusDot.classList.add('active');
+    addLog("Đang khởi tạo tiến trình...", "#ffff00");
 
-    // Giả lập vòng lặp Spam (Trong thực tế bạn sẽ gọi API Backend ở đây)
-    spamInterval = setInterval(() => {
-        addLog("Gửi packet: 0115... thành công");
-    }, 1500);
-});
+    // ĐÂY LÀ PHẦN LÀM CHO WEB CÓ CÔNG DỤNG:
+    // Bạn cần chạy một script Python (Flask) ở local hoặc server để nhận yêu cầu này
+    try {
+        addLog("Đang gửi lệnh tới server xử lý...");
+        
+        // Giả lập gửi tới server xử lý Spam
+        // Trong thực tế bạn sẽ dùng: await fetch('http://localhost:5000/start-spam?token=' + token);
+        
+        addLog("Packet đã được gửi: AccountID: 8038983330...");
+        addLog("Đang spam TCP tới IP Garena...");
+    } catch (e) {
+        addLog("Lỗi kết nối Server!", "#ff0000");
+    }
+};
 
-stopBtn.addEventListener('click', () => {
-    isRunning = false;
+stopBtn.onclick = () => {
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    tokenInput.disabled = false;
-    
-    clearInterval(spamInterval);
-    
-    liveStatus.textContent = "Đã dừng";
-    liveStatus.style.background = "#57606f";
-    
-    showToast("Đã dừng hệ thống spam.", "info");
-    addLog("Dừng tiến trình theo yêu cầu.");
-});
+    statusDot.classList.remove('active');
+    addLog("Đã dừng tiến trình.", "#ff4757");
+};
