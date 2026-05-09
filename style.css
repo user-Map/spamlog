@@ -1,118 +1,91 @@
-:root {
-    --primary: #ff4757;
-    --secondary: #2f3542;
-    --accent: #2ed573;
-    --bg: #0a0a0a;
-    --glass: rgba(255, 255, 255, 0.05);
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background: #050505; 
+    color: #fff; 
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden; /* Không cho body cuộn, chỉ nội dung chính cuộn */
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg);
-    color: white;
+.wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    overflow: hidden;
+    flex-direction: column;
+    height: 100vh;
 }
 
-/* Hiệu ứng nền sao bay */
-.stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-    z-index: -1;
-}
-
-.container {
-    width: 100%;
-    max-width: 500px;
+/* Phần nội dung có thể vuốt lên xuống */
+.content {
+    flex: 1;
+    overflow-y: auto; /* Cho phép vuốt */
     padding: 20px;
+    padding-bottom: 200px; /* Tránh bị phần Log che mất nội dung cuối */
+    -webkit-overflow-scrolling: touch; /* Vuốt mượt trên điện thoại */
 }
 
 .card {
-    background: var(--glass);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+    border: 1px solid #333;
+    border-radius: 15px;
+    padding: 25px;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-.header { text-align: center; margin-bottom: 30px; }
-.logo-icon { font-size: 3rem; color: var(--primary); text-shadow: 0 0 20px var(--primary); }
-h1 { margin: 10px 0 5px; letter-spacing: 2px; font-size: 1.5rem; }
-p { color: #888; font-size: 0.9rem; }
+.header h1 { color: #ff4757; text-align: center; margin-bottom: 10px; }
 
-.input-group { margin-bottom: 20px; }
-.input-group label { display: block; margin-bottom: 8px; color: #ccc; font-size: 0.9rem; }
-input {
+textarea {
     width: 100%;
-    padding: 12px;
-    background: rgba(0,0,0,0.3);
+    height: 100px;
+    background: #000;
     border: 1px solid #444;
     border-radius: 8px;
-    color: white;
-    box-sizing: border-box;
-    transition: 0.3s;
-}
-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px rgba(255, 71, 87, 0.3); }
-
-.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-.btn {
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-.btn-start { background: var(--primary); color: white; }
-.btn-start:hover { background: #ff6b81; transform: translateY(-2px); }
-.btn-stop { background: #57606f; color: white; }
-.btn-stop:not(:disabled):hover { background: #ff4757; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.terminal {
-    background: rgba(0,0,0,0.6);
-    height: 120px;
-    border-radius: 8px;
+    color: #00ff00;
     padding: 10px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.8rem;
-    overflow-y: auto;
-    border: 1px solid #333;
+    margin: 15px 0;
 }
-.line { margin-bottom: 5px; color: var(--accent); }
 
-/* Popup CSS */
-#notification-container {
+.btn-run { width: 100%; padding: 15px; background: #ff4757; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.btn-stop { width: 100%; padding: 15px; background: #333; border: none; color: white; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+
+/* Phần Log cố định ở dưới */
+.log-container {
+    height: 180px;
+    background: #000;
+    border-top: 2px solid #ff4757;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-header {
+    background: #111;
+    padding: 5px 15px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.log-body {
+    flex: 1;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 13px;
+    overflow-y: auto;
+    color: #00ff00;
+}
+
+.dot { height: 10px; width: 10px; background: #555; border-radius: 50%; }
+.dot.active { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
+
+/* Hiệu ứng Popup Toast */
+#toast {
     position: fixed;
     top: 20px;
-    right: 20px;
-    z-index: 9999;
-}
-.toast {
-    background: #2f3542;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 5px solid var(--primary);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: slideIn 0.5s ease forwards;
-}
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 71, 87, 0.9);
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: none;
+    z-index: 999;
 }
